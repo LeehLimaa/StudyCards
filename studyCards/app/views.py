@@ -18,22 +18,55 @@ def disciplina(request):
 
 def conteudo(request):
     if request.POST:
-        nova_conteudo = conteudo()
-        nova_conteudo.nome_conteudo = request.POST.get('nome_conteudo')
-    try:
-        disciplina = Disciplina.objects.get(pk=request.POST.get('disciplina'))
-        nova_conteudo.disciplina = disciplina
-        nova_conteudo.save()
-    except Disciplina.DoesNotExist:
-        print("Disciplina não encontrada!")
-    except Exception as e:
-        print("Erro de integridade:", e)
+        novo_conteudo = Conteudo()
+        novo_conteudo.nome_conteudo = request.POST.get('nome_conteudo')
+        novo_conteudo.descricao_conteudo = request.POST.get('descricao_conteudo')
+
+        try:
+            disciplina = Disciplina.objects.get(pk=request.POST.get('disciplina'))
+            novo_conteudo.disciplina = disciplina
+            novo_conteudo.save()
+        except Disciplina.DoesNotExist:
+            print("Disciplina não encontrada!")
+        except Exception as e:
+            print("Erro de integridade:", e)
 
     conteudos = {
+        'conteudos': Conteudo.objects.all(),
         'disciplina': Disciplina.objects.all()
     }
     
     return render(request, 'conteudo/conteudo.html', conteudos)
+
+def cartao(request):
+    if request.POST:
+        novo_cartao = Cartao()
+        novo_cartao.termo = request.POST.get('termo')
+        novo_cartao.definicao = request.POST.get('definicao')
+
+        try:
+            conteudo = Conteudo.objects.get(pk=request.POST.get('conteudo'))
+            novo_cartao.conteudo = conteudo
+            novo_cartao.save()
+        except Conteudo.DoesNotExist:
+            print("conteudo não encontrada!")
+        except Exception as e:
+            print("Erro de integridade:", e)
+
+    cartaos = {
+        'cartaos': Cartao.objects.all(),
+        'conteudo': Conteudo.objects.all()
+    }
+    
+    return render(request, 'cartao/cartao.html', cartaos)
+
+def consulta(request):
+    consultas = {
+         'consultas':Cartao.objects.all()
+        }
+
+    return render(request,'consulta/consulta.html', consultas)
+
 
 
 

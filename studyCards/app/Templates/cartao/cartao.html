@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página Inicial</title>
+  <title>Cartões</title>
   <!-- Incluindo Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -35,18 +35,54 @@
         </li>
       </ul>
     </div>
-  </nav><br><br>
+  </nav>
 
   <div class="container mt-5">
-    <div class="jumbotron text-center bg-info">
-      <h1 class="display-4 text-white"><strong>StudyCards</strong></h1>
+    <h2 class="mb-4">Adicionar Cartão:</h2>
+    <form action="/cartao/" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+          <label for="termo">Termo:</label>
+          <input type="text" class="form-control" id="termo" name="termo">
+      </div>
+      <div class="form-group">
+        <label for="definicao">Definição:</label>
+        <input type="text" class="form-control" id="definicao" name="definicao">
     </div>
-    <a class="nav-link text-dark btn btn-outline-info text-center" href="/consulta/">Começar a estudar</a><br>
-    <a class="nav-link text-dark btn btn-outline-info text-center" href="/disciplina/">Adicionar disciplinas</a><br>
-    <a class="nav-link text-dark btn btn-outline-info text-center" href="/conteudo/">Adicionar conteúdos</a><br>
-    <a class="nav-link text-dark btn btn-outline-info text-center" href="/cartao/">Adicionar cartões</a><br>
-    <a class="nav-link text-white btn btn-outline-dark text-center" href="/admin/">Painel do administrador</a>
+    <div class="form-group">
+        <label for="conteudo">conteudo:</label>
+        <select class="form-control" id="conteudo" name="conteudo">
+            {% for Conteudo in conteudo %}
+                <option value="{{Conteudo.id}}">{{ Conteudo.nome_conteudo }}</option>
+            {% endfor %}
+        </select>
+    </div>
+      <button type="submit" class="btn btn-light mt-3 btn-lg btn-block">Salvar</button>
+    </form><br>      
   </div>
+  
+  <div class="container mt-5">
+    <h2 class="mb-4">Conteúdos Cadastrados:</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Termo</th>
+          <th scope="col">Definição</th>
+          <th scope="col">Conteúdo</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for Cartao in cartaos %}
+        <tr>
+          <td>{{Cartao.termo}}</td>
+          <td>{{Cartao.definicao}}</td>
+          <td>{{Cartao.conteudo}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
 
   <!-- Incluindo jQuery e Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

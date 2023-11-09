@@ -19,13 +19,16 @@
             <a class="nav-link text-dark" href="/">Home</a>
           </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="/disciplina">Disciplinas</a>
+          <a class="nav-link text-dark" href="/disciplina">Adicionar Disciplinas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="/conteudo/">Conteudos</a>
+          <a class="nav-link text-dark" href="/conteudo/">Adicionar Conteudos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-dark" href="/cartao/">Cartões</a>
+          <a class="nav-link text-dark" href="/cartao/">Adicionar Cartões</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-dark" href="/consulta/">Começar a estudar!</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-dark" href="/admin/">Administração</a>
@@ -39,43 +42,47 @@
     <form action="/conteudo/" method="post">
       {% csrf_token %}
       <div class="form-group">
-          <label for="data">Nome:</label>
+          <label for="nome_conteudo">Nome:</label>
           <input type="text" class="form-control" id="nome_conteudo" name="nome_conteudo">
       </div>
       <div class="form-group">
-        <label for="data">Descrição:</label>
+        <label for="descricao_conteudo">Descrição:</label>
         <input type="text" class="form-control" id="descricao_conteudo" name="descricao_conteudo">
     </div>
     <div class="form-group">
-        <label for="data">Disciplina:</label>
-        <input type="text" class="form-control" id="disciplina" name="disciplina">
-        {% for Disciplina in Disciplina %}
-            <option value="{{Disciplina.id}}">{{ Disciplina.nome_disciplina }}</option>
-        {% endfor %}
+        <label for="disciplina">Disciplina:</label>
+        <select class="form-control" id="disciplina" name="disciplina">
+            {% for Disciplina in disciplina %}
+                <option value="{{Disciplina.id}}">{{ Disciplina.nome_disciplina }}</option>
+            {% endfor %}
+        </select>
     </div>
       <button type="submit" class="btn btn-light mt-3 btn-lg btn-block">Salvar</button>
-  </form>
-    <br>      
+    </form><br>      
   </div>
-  </div>
-
+  
   <div class="container mt-5">
     <h2 class="mb-4">Conteúdos Cadastrados:</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Nome</th>
-            </tr>
-            {% for Disciplina in disciplinas %}
-          </thead>
-          <tbody>
-           <td>{{Disciplina.nome_disciplina}}</td>
-          </tbody>
-           {% endfor %} 
-        </table>
-      </div>
-    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Título</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Disciplina</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for Conteudo in conteudos %}
+        <tr>
+          <td>{{Conteudo.nome_conteudo}}</td>
+          <td>{{Conteudo.descricao_conteudo}}</td>
+          <td>{{Conteudo.disciplina}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
+  
 
   <!-- Incluindo jQuery e Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

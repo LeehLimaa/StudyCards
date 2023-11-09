@@ -12,7 +12,7 @@ class Conteudo(models.Model):
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.nome_conteudo} {self.descricao_conteudo} {self.disciplina}'
+        return f'{self.nome_conteudo} - {self.disciplina}'
    
 class Cartao(models.Model):
     termo = models.CharField(max_length=100)

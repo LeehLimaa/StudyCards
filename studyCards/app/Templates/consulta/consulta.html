@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página Inicial</title>
+  <title>Começar a estudar!</title>
   <!-- Incluindo Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -35,18 +35,79 @@
         </li>
       </ul>
     </div>
-  </nav><br><br>
-
+  </nav>
+  
+  <style>
+    .flashcard-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .flashcard {
+      width: 300px;
+      height: 200px;
+      margin: 10px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+  
+    .card {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+    }
+  
+    .card:hover {
+      transform: rotateY(180deg);
+    }
+  
+    .front, .back {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .front {
+      color: rgb(255, 255, 255);
+      font-size: 24px;
+    }
+  
+    .back {
+      background-color: #7bc9d3;
+      color: white;
+      font-size: 18px;
+      transform: rotateY(180deg);
+    }
+  </style>
+  
   <div class="container mt-5">
-    <div class="jumbotron text-center bg-info">
-      <h1 class="display-4 text-white"><strong>StudyCards</strong></h1>
+    <div class="flashcard-container">
+      {% for Cartao in consultas %}
+      <div class="flashcard">
+        <div class="text-center">{{ Cartao.conteudo }}</div>
+        <div class="card">
+          <div class="front bg-info"><strong>{{ Cartao.termo }}</strong></div>
+          <div class="back text-center">{{ Cartao.definicao }}</div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-    <a class="nav-link text-dark btn btn-outline-info text-center" href="/consulta/">Começar a estudar</a><br>
-    <a class="nav-link text-dark btn btn-outline-info text-center" href="/disciplina/">Adicionar disciplinas</a><br>
-    <a class="nav-link text-dark btn btn-outline-info text-center" href="/conteudo/">Adicionar conteúdos</a><br>
-    <a class="nav-link text-dark btn btn-outline-info text-center" href="/cartao/">Adicionar cartões</a><br>
-    <a class="nav-link text-white btn btn-outline-dark text-center" href="/admin/">Painel do administrador</a>
-  </div>
+  </div> 
+  
+  <script>
+    function flipCard(card) {
+      const cardElement = card.querySelector(".card");
+      cardElement.classList.toggle("flipped");
+    }
+  </script>
+  
+  
 
   <!-- Incluindo jQuery e Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
