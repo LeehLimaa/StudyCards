@@ -67,6 +67,30 @@ def consulta(request):
 
     return render(request,'consulta/consulta.html', consultas)
 
+def consulta(request):
+    cartoes = Cartao.objects.all()
+    conteudos = Conteudo.objects.all()
+    disciplinas = Disciplina.objects.all()
+
+    cartoes_por_disciplina = {}
+    for disciplina in disciplinas:
+        nome_disciplina = disciplina.nome_disciplina
+        cartoes_por_disciplina[nome_disciplina] = {}
+
+        for conteudo in conteudos.filter(disciplina=disciplina):
+            nome_conteudo = conteudo.nome_conteudo
+            cartoes_por_disciplina[nome_disciplina][nome_conteudo] = []
+
+        for cartao in cartoes.filter(conteudo__disciplina=disciplina):
+            nome_conteudo = cartao.conteudo.nome_conteudo
+            cartoes_por_disciplina[nome_disciplina][nome_conteudo].append(cartao)
+
+    context = {
+        'cartoes_por_disciplina': cartoes_por_disciplina
+    }
+
+    return render(request, 'consulta/consulta.html', context)
+
 
 
 

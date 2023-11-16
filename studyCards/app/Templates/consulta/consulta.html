@@ -45,8 +45,8 @@
     }
   
     .flashcard {
-      width: 300px;
-      height: 200px;
+      width: 400px;
+      height: 300px;
       margin: 10px;
       perspective: 1000px;
       cursor: pointer;
@@ -78,36 +78,78 @@
       font-size: 24px;
     }
   
-    .back {
-      background-color: #7bc9d3;
-      color: white;
-      font-size: 18px;
-      transform: rotateY(180deg);
-    }
+    .flashcard {
+    position: relative; 
+  }
+
+  .back {
+    color: black;
+    font-size: 18px;
+    transform: rotateY(180deg);
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .back button {
+    margin: 3px;
+  }
   </style>
   
-  <div class="container mt-5">
-    <div class="flashcard-container">
-      {% for Cartao in consultas %}
-      <div class="flashcard">
-        <div class="text-center">{{ Cartao.conteudo }}</div>
-        <div class="card">
-          <div class="front bg-info"><strong>{{ Cartao.termo }}</strong></div>
-          <div class="back text-center">{{ Cartao.definicao }}</div>
-        </div>
-      </div>
+  <div class="container-fluid mt-5">
+    {% for nome_disciplina, disciplinas in cartoes_por_disciplina.items %}
+      <h2 class="text-center text-info"><strong>{{ nome_disciplina }}</strong></h2>
+      {% for nome_conteudo, cartoes in disciplinas.items %}
+        <h3 class="text-center text-secondary">{{ nome_conteudo }}</h3>
+        <div class="flashcard-container">
+          {% for cartao in cartoes %}
+          <div class="flashcard" id="card{{ loop.index }}">
+            <div class="card">
+                <div class="front bg-info"><strong>{{ cartao.termo }}</strong></div>
+                <div class="back text-center">{{ cartao.definicao }}
+                  <div><br><br>
+                    <button class="btn btn-danger" onclick="feedback('card{{ loop.index }}', 'errei')">Errei</button>
+                    <button class="btn btn-success" onclick="feedback('card{{ loop.index }}', 'acertei')">Acertei</button>
+                  </div>
+                </div> 
+              </div>
+            </div>
+          {% endfor %}
+        </div><br><br>
       {% endfor %}
-    </div>
-  </div> 
+    {% endfor %}
+  </div>
+  
+  
   
   <script>
-    function flipCard(card) {
-      const cardElement = card.querySelector(".card");
-      cardElement.classList.toggle("flipped");
+  
+  function feedback(cartao, resultado) {
+    const cardElement = cartao.querySelector(".card");
+
+    if (resultado === 'acertei') {
+      cardElement.style.backgroundColor = 'MediumSeaGreen';
+    } else if (resultado === 'errei') {
+      cardElement.style.backgroundColor = 'Salmon';
     }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".flashcard button");
+    
+    buttons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        const card = button.closest(".flashcard");
+        const result = button.classList.contains("btn-success") ? "acertei" : "errei";
+        feedback(card, result);
+      });
+    });
+  });
   </script>
-  
-  
 
   <!-- Incluindo jQuery e Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
